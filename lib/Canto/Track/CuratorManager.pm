@@ -227,6 +227,9 @@ sub set_curator
       $curator->update();
     }
 
+    warn "$curs_curator_orcid ", length $curs_curator_orcid, " ",
+      $curator->orcid(), " ", _orcid_is_valid($curs_curator_orcid), "\n";
+
     if (defined $curs_curator_orcid && length $curs_curator_orcid > 0 &&
         !$curator->orcid() && _orcid_is_valid($curs_curator_orcid)) {
       $curator->orcid($curs_curator_orcid);

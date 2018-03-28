@@ -19,7 +19,7 @@ $model
             <li>
               <a href="<% $c->uri_for('/view/list/gene', { model => 'track'} ) %>">Genes</a>
             </li>
-%  if ($c->user_exists() && $c->user()->role()->name() eq 'admin') {
+%  if ($c->user_exists() && $c->user()->is_admin()) {
             <li>
               <a href="<% $c->uri_for('/view/list/cv', { model => 'track'} ) %>">CVs</a>
             </li>
@@ -33,6 +33,9 @@ $model
         </h3>
         <div>
           <ul>
+            <li>
+              <a href="<% $c->uri_for('/tools/pubmed_id_start') %>">By PubMed ID</a>
+            </li>
 %  if ($c->user_exists() && $c->user()->role()->name() eq 'admin') {
             <li>
               <a href="<% $c->uri_for('/object/new/person', { model => 'track'} ) %>">Person</a>
@@ -45,7 +48,7 @@ $model
         </div>
     </div>
 
-% if ($c->user_exists() && $c->user()->role()->name() eq 'admin') {
+% if ($c->user_exists() && $c->user()->is_admin()) {
     <div class="col-sm-6 col-md-6">
         <h3>
           Tools ...

@@ -64,16 +64,6 @@ __PACKAGE__->table("person");
   is_foreign_key: 1
   is_nullable: 1
 
-=head2 session_data
-
-  data_type: 'text'
-  is_nullable: 1
-
-=head2 password
-
-  data_type: 'text'
-  is_nullable: 1
-
 =head2 added_date
 
   data_type: 'timestamp'
@@ -96,10 +86,6 @@ __PACKAGE__->add_columns(
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "lab",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
-  "session_data",
-  { data_type => "text", is_nullable => 1 },
-  "password",
-  { data_type => "text", is_nullable => 1 },
   "added_date",
   { data_type => "timestamp", is_nullable => 1 },
 );
@@ -225,8 +211,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07045 @ 2016-06-27 16:00:21
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:08WxCZlCYxpS2EaiuDBEtQ
+# Created by DBIx::Class::Schema::Loader v0.07046 @ 2016-10-07 13:33:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:DifL3K/Pg/1z3z1W+C3FpA
 
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);

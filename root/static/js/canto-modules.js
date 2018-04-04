@@ -334,6 +334,8 @@ canto.service('CursGenotypeList', function($q, Curs) {
       promise.then(function() {
         service.sendChangeEvent();
       });
+
+      return promise;
     };
 
   this.cursGenotypeList = function(options) {
@@ -3412,11 +3414,6 @@ var GenotypeManageCtrl =
     $scope.makeDeletionAllele = function(gene_id) {
       var gene = ($.grep($scope.data.genes, function(gene) { return gene.gene_id == gene_id; }))[0];
       var displayName = gene.primary_name || gene.primary_identifier;
-
-      for (var i = 0; i < $scope.data.singleAlleleGenotypes.length; i++) {
-        var genotype = $scope.data.singleAlleleGenotypes[i];
-        console.log(genotype);
-      }
 
       var deletionAllele = {
         description: "",

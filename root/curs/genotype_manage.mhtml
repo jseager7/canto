@@ -50,10 +50,11 @@ Specify alleles of genes from the list, until the new genotype is complete
           </thead>
           <tbody>
             <tr ng-repeat="gene in data.genes">
-              <td ng-if="gene.primary_name" title="{{gene.primary_name}} ({{gene.primary_identifier}})"</td>{{gene.primary_name}}</td>
+              <td ng-if="gene.primary_name" title="{{gene.primary_name}} ({{gene.primary_identifier}})">{{gene.primary_name}}</td>
               <td ng-if="!gene.primary_name" title="{{gene.primary_identifier}}">{{gene.primary_identifier}}</td>
               <td>
                 <button class="btn btn-primary btn-xs"
+                        title="{{deletionButtonTitle(gene.gene_id)}}"
                         ng-disabled="hasDeletionGenotype(gene.gene_id)"
                         ng-click="makeDeletionAllele(gene.gene_id)">Deletion</button>
               </td>
@@ -81,6 +82,7 @@ Specify alleles of genes from the list, until the new genotype is complete
 
           <genotype-list-view genotype-list="data.singleAlleleGenotypes"
                               navigate-on-click="false"
+                              show-check-box-actions="true"
                               selected-genotype-id="data.selectedGenotypeId">
           </genotype-list-view>
         </div>
@@ -91,6 +93,7 @@ Specify alleles of genes from the list, until the new genotype is complete
 
           <genotype-list-view genotype-list="data.multiAlleleGenotypes"
                               navigate-on-click="false"
+                              show-check-box-actions="false"
                               selected-genotype-id="data.selectedGenotypeId">
           </genotype-list-view>
         </div>
@@ -100,12 +103,12 @@ No genotypes in this session.  Try adding one.
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-5 col-md-5">
-        <button ng-click="backToSummary()" type="button" class="btn btn-primary curs-back-button">&lt;- Back to summary</button>
-      </div>
-    </div>
+  </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-5 col-md-5">
+      <button ng-click="backToSummary()" type="button" class="btn btn-primary curs-back-button">&lt;- Back to summary</button>
     </div>
   </div>
-</div>
+  </div>
 </div>

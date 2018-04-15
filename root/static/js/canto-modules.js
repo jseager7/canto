@@ -3345,7 +3345,8 @@ canto.controller('GenotypeViewCtrl',
 
 
 var GenotypeManageCtrl =
-  function($scope, $uibModal, $location, $http, Curs, CursGenotypeList, CantoGlobals, toaster) {
+  function($scope, $uibModal, $location, $http, Curs, CursGenotypeList, CantoGlobals,
+           CantoConfig, toaster) {
     $scope.app_static_path = CantoGlobals.app_static_path;
     $scope.read_only_curs = CantoGlobals.read_only_curs;
     $scope.curs_root_uri = CantoGlobals.curs_root_uri;
@@ -3360,17 +3361,63 @@ var GenotypeManageCtrl =
       selectedGenotypeId: null,
       editingGenotype: false,
       editGenotypeId: null,
-      genes: [],
+      allGenes: [],
+      selectedOrganism: null,
+      organismsOfGenes: [],
+      multiOrganismMode: false,
     };
+
+    CantoConfig.get('instance_organism').success(function(results) {
+      if (!results.taxonid) {
+        $scope.data.multiOrganismMode = true;
+      }
+    });
+
+    $scope.selectedOrganismGenes = function() {
+      if ($scope.data.selectedOrganism) {
+        return $.grep($scope.data.allGenes,
+                      function(gene) {
+                        return gene.organism.taxonid === $scope.data.selectedOrganism.taxonid;
+                      });
+      } else {
+        if ($scope.data.organismsOfGenes.length == 1) {
+          return $scope.allGenes;
+        } else {
+          return [];
+        }
+      }
+    };
+
+    $scope.setOrganismsOfGenes = function() {
+      var organisms = {};
+
+      $.map($scope.data.allGenes, function(gene) {
+        organisms[gene.organism.taxonid] = gene.organism;
+      });
+
+      var retList = [];
+
+      $.map(Object.keys(organisms), function(taxonid) {
+        retList.push(organisms[taxonid]);
+      });
+
+      return retList;
+    }
 
     $scope.getGenesFromServer = function() {
       Curs.list('gene').success(function(results) {
-        $scope.data.genes = results;
+        $scope.data.allGenes = results;
 
-        $.map($scope.data.genes,
+        $.map($scope.data.allGenes,
               function(gene) {
                 gene.display_name = gene.primary_name || gene.primary_identifier;
               });
+
+        $scope.data.organismsOfGenes = $scope.setOrganismsOfGenes();
+
+        if ($scope.data.organismsOfGenes.length === 1) {
+          $scope.data.selectedOrganism = $scope.data.organismsOfGenes[0];
+        }
       }).error(function() {
         toaster.pop('error', 'failed to get gene list from server');
       });
@@ -3421,7 +3468,9 @@ var GenotypeManageCtrl =
     };
 
     $scope.makeDeletionAllele = function(gene_id) {
-      var gene = ($.grep($scope.data.genes, function(gene) { return gene.gene_id == gene_id; }))[0];
+      var gene = ($.grep($scope.data.allGenes, function(gene) {
+        return gene.gene_id == gene_id;
+      }))[0];
       var displayName = gene.primary_name || gene.primary_identifier;
 
       var deletionAllele = {
@@ -3515,7 +3564,8 @@ var GenotypeManageCtrl =
   };
 
 canto.controller('GenotypeManageCtrl',
-                 ['$scope', '$uibModal', '$location', '$http', 'Curs', 'CursGenotypeList', 'CantoGlobals', 'toaster',
+                 ['$scope', '$uibModal', '$location', '$http', 'Curs', 'CursGenotypeList',
+                  'CantoGlobals', 'CantoConfig', 'toaster',
                  GenotypeManageCtrl]);
 
 var geneSelectorCtrl =

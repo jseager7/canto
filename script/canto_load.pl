@@ -198,7 +198,17 @@ if ($do_organisms) {
     chomp $line;
     next if $line =~ /^\s*$/;
 
+    if ($line !~ /,/) {
+      warn "line doesn't look comma separated: $line\n";
+      next;
+    }
+
     my ($genus, $species, $taxonid, $common_name) = split (/,/, $line);
+
+    if (!defined $taxonid) {
+      warn "not enough fields in line: $line\n";
+      next;
+    }
 
     $species =~ s/^\s+//;
     $species =~ s/\s+$//;

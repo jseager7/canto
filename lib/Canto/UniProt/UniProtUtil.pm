@@ -95,11 +95,14 @@ sub parse_results
     my $accession = _content($entry->{accession}->[0]);
 
     my $organism_full_name = 'Unknown unknown';
+    my $organism_common_name = undef;
 
     for my $org_details (@{$entry->{organism}->[0]->{name}}) {
       if ($org_details->{type} eq 'scientific') {
         $organism_full_name = _content($org_details);
-        last;
+      }
+      if ($org_details->{type} eq 'common') {
+        $organism_common_name = _content($org_details);
       }
     }
 
@@ -117,6 +120,7 @@ sub parse_results
       product => $full_name,
       synonyms => [@synonyms],
       organism_full_name => $organism_full_name,
+      organism_common_name => $organism_common_name,
       organism_taxonid => $taxonid,
     };
   }
@@ -143,18 +147,10 @@ sub retrieve_entries
 
   # copied from http://www.uniprot.org/faq/28#batch_retrieval_of_entries
   my $agent = LWP::UserAgent->new;
-  push @{$agent->requests_redirectable}, 'POST';
 
-  my $response = $agent->post($batch_service_url,
-                              [
-                                'file' => [
-                                  undef, 'upload.xml',
-                                  Content_Type => 'text/plain',
-                                  Content => "@identifiers"
-                               ],
-                               'format' => 'xml',
-                               ],
-                               'Content_Type' => 'form-data');
+  my $url = $batch_service_url . join (' OR ', map { "id:$_" } @identifiers);
+
+  my $response = $agent->get($url, 'Accept-Encoding' => 'gzip, x-gzip, deflate');
 
   while (my $wait = $response->header('Retry-After')) {
     print STDERR "Waiting ($wait)...\n";

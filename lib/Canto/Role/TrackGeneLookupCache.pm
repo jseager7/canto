@@ -26,7 +26,7 @@ You can find documentation for this module with the perldoc command.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2013 Kim Rutherford, all rights reserved.
+Copyright 2018 Kim Rutherford, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
@@ -84,9 +84,12 @@ around 'lookup' => sub {
       $species = "unknown";
     }
 
+    my $organism_common_name = $_->{organism_common_name};
+
     my $taxonid = $_->{organism_taxonid};
 
-    my $organism = $load_util->get_organism($genus, $species, $taxonid);
+    my $organism = $load_util->get_organism($genus, $species, $taxonid,
+                                            $organism_common_name);
 
     my $gene_load = Canto::Track::GeneLoad->new(organism => $organism, schema => $schema);
 

@@ -5576,6 +5576,7 @@ var initiallyHiddenText =
         text: '@',
         linkLabel: '@',
         previewCharCount: '@',
+        breakOnComma: '@',
       },
       restrict: 'E',
       replace: true,
@@ -5593,6 +5594,10 @@ var initiallyHiddenText =
                       function() {
                         $scope.trimmedText = $.trim($scope.text);
 
+                        if ($scope.breakOnComma) {
+                          $scope.trimmedText = $scope.trimmedText.replace(/,/g, ', ');
+                        }
+
                         if ($scope.previewCharCount && $scope.previewCharCount > 0) {
                           if ($scope.previewCharCount < $scope.trimmedText.length) {
                             $scope.previewChars = $scope.text.substr(0, $scope.previewCharCount);
@@ -5603,9 +5608,9 @@ var initiallyHiddenText =
                       });
       },
       template: '<span ng-show="trimmedText.length > 0">' +
-        '<span ng-hide="hidden">{{trimmedText}}</span>' +
+        '<span ng-hide="hidden" ng-bind-html="trimmedText | toTrusted"></span>' +
         '<span ng-show="hidden" uib-tooltip="{{trimmedText}}">' +
-        '  <span ng-show="previewChars.length > 0">{{previewChars}}</span>' +
+        '  <span ng-show="previewChars.length > 0" ng-bind-html="previewChars | toTrusted"></span>' +
         '  <a ng-click="show()">&nbsp;<span style="font-weight: bold">{{linkLabel}}</span></a>' +
         '</span></span>',
     };
@@ -5877,11 +5882,14 @@ var organismPicker = function($http, OrganismList) {
         OrganismList.getOrganismList().then(function(results) {
           if (results.status == 200) {
             for (var organism of results.data) {
-              var commonName = (organism.common_name.length > 0) ? " (" + organism.common_name + ")" : "";
+              var commonName = (organism.common_name && (organism.common_name.length > 0)) ?
+                " (" + organism.common_name + ")" : "";
               organism.display = "[" + organism.taxonid + "] " + organism.full_name + commonName;
               $scope.organisms.push(organism);
             }
             $scope.organismsCount = $scope.organisms.length;
+          } else {
+            $scope.organismsCount = 0;
           }
         });
       }

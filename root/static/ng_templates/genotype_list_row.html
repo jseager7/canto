@@ -1,4 +1,6 @@
-<tr ng-mouseover="mouseOver($event)" ng-class="{ selected: isSelected() }">
+<tbody ng-mouseover="mouseOver($event)"
+    ng-class="{ selected: isSelected() }">
+  <tr>
   <td ng-if="showCheckBoxActions" class="curs-genotype-checkbox-column"
       rowspan="{{genotype.alleles.length}}">
     <input ng-show="showCheckBoxActions" name="select-annotation" type="Checkbox" ng-model="$parent.checkBoxIsChecked"/>
@@ -38,15 +40,16 @@
       </genotype-list-row-links>
     </div>
   </td>
-</tr>
-<tr ng-repeat="currentAllele in otherAlleles">
-  <td>
-    <a href="{{curs_root_uri + '/feature/gene/view/' + currentAllele.gene_id + (read_only_curs ? '/ro' : '')}}">{{currentAllele.gene_display_name}}</a>
-  </td>
-  <td>
-    <span ng-bind-html="currentAllele.display_name | encodeAlleleSymbols | toTrusted"></span>
-  </td>
-  <td>
-    <span ng-bind-html="currentAllele.expression | formatExpression | toTrusted"></span>
-  </td>
-</tr>
+  </tr>
+  <tr ng-repeat="currentAllele in otherAlleles">
+    <td>
+      <a href="{{curs_root_uri + '/feature/gene/view/' + currentAllele.gene_id + (read_only_curs ? '/ro' : '')}}">{{currentAllele.gene_display_name}}</a>
+    </td>
+    <td>
+      <span ng-bind-html="currentAllele.display_name | encodeAlleleSymbols | toTrusted"></span>
+    </td>
+    <td>
+      <span ng-bind-html="currentAllele.expression | formatExpression | toTrusted"></span>
+    </td>
+  </tr>
+</tbody>

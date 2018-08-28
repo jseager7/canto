@@ -27,7 +27,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "canto"
   config.vm.box_url = settings['box_url']
 
-  config.vm.network "forwarded_port", guest: 5000, host: 5000
+  config.vm.network "forwarded_port", guest: 5000, host: 5000, id: "canto"
   config.vm.network "forwarded_port", guest: 9876, host: 9876, id: "karma"
 
   config.vm.synced_folder ".", "/home/canto/canto-master",

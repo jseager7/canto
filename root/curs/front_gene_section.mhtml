@@ -20,54 +20,58 @@ Annotate genes
   </div>
   <div class="curs-box-body">
 % if ($multi_organism_mode) {
-  <summary-page-gene-list> </summary-page-gene-list>
+    <summary-page-gene-list> </summary-page-gene-list>
 % } else {
 % for my $org_and_gene_hashes (@gene_hashes_by_organism) {
 %   my @gene_hashes = @{$org_and_gene_hashes->{gene_hashes}};
 
-<div class="curs-front-page-gene-table">
+    <div class="curs-front-page-gene-table">
 %   if (@gene_hashes) {
 <& /curs/front_gene_table.mhtml, gene_hashes => \@gene_hashes &>
 %   } else {
-  <div class="no-genes-message">
-    [No genes]
-  </div>
+      <div class="no-genes-message">
+        [No genes]
+      </div>
 %   }
-</div>
+    </div>
 % }
 
 % }
-  <div style="margin-top: 20px;">
+
 % if (!$read_only_curs) {
-  <div class="feature-list-action" style="margin-bottom: 20px;">
-    <a href="<% $edit_path %>">
+    <div style="margin-top: 20px;">
+      <div class="feature-list-action" style="margin-bottom: 20px;">
+        <a href="<% $edit_path %>">
 %   if ($multi_organism_mode) {
-Delete or Edit genes and organisms list ...
+          Delete or edit genes and organisms list ...
 %   } else {
-Edit gene list ...
+          Edit gene list ...
 %   }
-    </a>
-  </div>
+        </a>
+      </div>
+    </div>
 % }
+  </div>
+
 % if ($genotype_annotation_configured) {
   <div class="curs-box-title">
-    <div>
 % if ($read_only_curs) {
-Genotypes from this publication
+    Genotypes from this publication
 % } else {
-Annotate genotypes
+    Annotate genotypes
 % }
-    </div>
   </div>
 %   if ($pathogen_host_mode) {
-  <div class="feature-list-action">
-    <a href="<% $pathogen_genotype_manage_url %>"><% $read_only_curs ? 'View pathogen genotypes ...' : 'Pathogen genotype management ...' %></a>
-  </div>
-  <div class="feature-list-action">
-    <a href="<% $host_genotype_manage_url %>"><% $read_only_curs ? 'View host genotypes ...' : 'Host genotype management ...' %></a>
-  </div>
-  <div class="feature-list-action">
-    <a href="<% $metagenotype_manage_url %>"><% $read_only_curs ? 'View meta-genotypes ...' : 'Meta-genotype management ...' %></a>
+  <div class="curs-box-body">
+    <div class="feature-list-action">
+      <a href="<% $pathogen_genotype_manage_url %>"><% $read_only_curs ? 'View pathogen genotypes ...' : 'Pathogen genotype management ...' %></a>
+    </div>
+    <div class="feature-list-action">
+      <a href="<% $host_genotype_manage_url %>"><% $read_only_curs ? 'View host genotypes ...' : 'Host genotype management ...' %></a>
+    </div>
+    <div class="feature-list-action">
+      <a href="<% $metagenotype_manage_url %>"><% $read_only_curs ? 'View meta-genotypes ...' : 'Meta-genotype management ...' %></a>
+    </div>
   </div>
 %   } else {
   <div class="feature-list-action">

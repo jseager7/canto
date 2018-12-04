@@ -1,18 +1,18 @@
 <div>
   <table>
     <tr>
-      <th>Pathogen Organisms</td>
-      <th>Genes</td>
+      <th>Pathogen Organisms</th>
+      <th>Genes</th>
       <td ng-repeat="pad in getPadding() track by $index"></td>
     </tr>
     <tr summary-page-gene-row ng-repeat="org in organisms('pathogen')" organism="org" max-cols="maxCols"></tr>
   </table>
-  <br>
-      <tr>
-        <th>Host Organisms</th>
-        <th>Genes</th>
-        <td ng-repeat="pad in getPadding() track by $index"></td>
-      </tr>
-      <tr summary-page-gene-row ng-repeat="org in organisms('host')" organism="org" max-cols="maxCols"></tr>
-    </table>
-</div>  <table>
+  <table>
+    <tr>
+      <th>Host Organisms</th>
+      <th>Genes</th>
+      <td ng-repeat="pad in getPadding() track by $index"></td>
+    </tr>
+    <tr summary-page-gene-row ng-repeat="org in organisms('host')" organism="org" max-cols="maxCols"></tr>
+  </table>
+</div>

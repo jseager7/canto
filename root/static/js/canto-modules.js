@@ -58,6 +58,16 @@ function arrayRemoveOne(array, item) {
   }
 }
 
+function arrayContains(array, predicate) {
+  var i, len = array.length;
+  for (i = 0; i < len; i += 1) {
+    if (predicate(array[i]) === true) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function copyObject(src, dest, keysFilter) {
   Object.getOwnPropertyNames(src).forEach(function (key) {
     if (key.indexOf('$$') === 0) {

@@ -4282,13 +4282,21 @@ var genotypeManageCtrl =
           }).then(function (results) {
             setGenotypes(results);
             $scope.data.waitingForServer = false;
-            $scope.data.isMetagenotypeLinkDisabled = ($scope.data.genotypeMap.length === 0);
+            $scope.data.isMetagenotypeLinkDisabled = (
+              pathogenGenotypeExists(results) === false
+            );
             CursGenotypeList.onListChange($scope.readGenotypesCallback);
           }).catch(function () {
             toaster.pop('error', "couldn't read the genotype list from the server");
             $scope.data.waitingForServer = false;
           });
         };
+
+        var pathogenGenotypeExists = function (genotypes) {
+          return arrayContains(genotypes, function (g) {
+            return g.organism.pathogen_or_host === "pathogen";
+          });
+        }
 
         var setGenotypes = function (genotypes) {
           $scope.data.genotypeMap = mapGenotypes(genotypes);

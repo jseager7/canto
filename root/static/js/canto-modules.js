@@ -7002,17 +7002,6 @@ var metagenotypeGenotypePicker =
             '_genotype_manage';
         }
 
-        $scope.readGenotypes = function () {
-          CursGenotypeList.cursGenotypeList({
-            include_allele: 1
-          }).then(function (results) {
-            $scope.data.genotypes = results;
-          }).catch(function () {
-            toaster.pop('error', "couldn't read the genotype list from the server");
-            $scope.data.waitingForServer = false;
-          });
-        };
-
         $scope.setSingleAllele = function () {
           if ($scope.data.selectedOrganism == null) {
             $scope.data.singleAllele = [];
@@ -7060,7 +7049,6 @@ var metagenotypeGenotypePicker =
           } else {
             defaultGenotype = $scope.data.wildType;
           }
-          $scope.$emit($scope.data.genotypeType + ' selected', defaultGenotype);
         };
 
         $scope.setFilters = function () {
@@ -7077,16 +7065,6 @@ var metagenotypeGenotypePicker =
         $scope.data.isHost = !$scope.isPathogen;
 
         $scope.data.genotypeShortcutUrl = setGenotypeShortcut($scope.data.genotypeType);
-
-        Metagenotype.pickerOrganismCallbacks[$scope.data.genotypeType] = function (organism) {
-          $scope.data.selectedOrganism = organism;
-          $scope.setFilters();
-          $scope.setWildtypeOrganism();
-        };
-
-        $scope.data.pickerCallback = Metagenotype.pickerOrganismSelectors[$scope.data.genotypeType];
-
-        $scope.readGenotypes();
 
         StrainsService.getAllSessionStrains();
       },

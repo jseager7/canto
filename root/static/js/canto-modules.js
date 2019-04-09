@@ -7172,7 +7172,7 @@ var metagenotypeListView = function (Metagenotype) {
 canto.directive('metagenotypeListView', ['Metagenotype', metagenotypeListView]);
 
 
-var metagenotypeManage = function (CantoGlobals, CursGenotypeList, Metagenotype, StrainsService) {
+var metagenotypeManage = function (CantoGlobals, Curs, CursGenotypeList, Metagenotype, StrainsService) {
   return {
     scope: {},
     restrict: 'E',

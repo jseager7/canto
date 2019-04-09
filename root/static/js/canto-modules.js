@@ -7001,11 +7001,11 @@ var metagenotypeGenotypePicker =
             '_genotype_manage';
         }
 
-        $scope.setSingleAllele = function () {
+        $scope.setSingleAlleleGenotypes = function () {
           if ($scope.data.selectedOrganism == null) {
-            $scope.data.singleAllele = [];
+            $scope.data.singleAlleleGenotypes = [];
           } else {
-            $scope.data.singleAllele = $scope.data.genotypes.filter(function (e) {
+            $scope.data.singleAlleleGenotypes = $scope.data.genotypes.filter(function (e) {
               return (
                 (e.organism.taxonid === $scope.data.selectedOrganism.taxonid) &&
                 (e.alleles.length === 1)
@@ -7014,11 +7014,11 @@ var metagenotypeGenotypePicker =
           }
         };
 
-        $scope.setMultiAllele = function () {
+        $scope.setMultiAlleleGenotypes = function () {
           if ($scope.data.selectedOrganism == null) {
-            $scope.data.multiAllele = [];
+            $scope.data.multiAlleleGenotypes = [];
           } else {
-            $scope.data.multiAllele = $scope.data.genotypes.filter(function (e) {
+            $scope.data.multiAlleleGenotypes = $scope.data.genotypes.filter(function (e) {
               return (
                 (e.organism.taxonid === $scope.data.selectedOrganism.taxonid) &&
                 (e.alleles.length > 1)
@@ -7041,18 +7041,18 @@ var metagenotypeGenotypePicker =
 
         $scope.setDefaultGenotype = function () {
           var defaultGenotype = null;
-          if ($scope.data.singleAllele.length > 0) {
-            defaultGenotype = $scope.data.singleAllele[0];
-          } else if ($scope.data.multiAllele.length > 0) {
-            defaultGenotype = $scope.data.multiAllele[0];
+          if ($scope.data.singleAlleleGenotypes.length > 0) {
+            defaultGenotype = $scope.data.singleAlleleGenotypes[0];
+          } else if ($scope.data.multiAlleleGenotypes.length > 0) {
+            defaultGenotype = $scope.data.multiAlleleGenotypes[0];
           } else {
             defaultGenotype = $scope.data.wildType;
           }
         };
 
         $scope.setFilters = function () {
-          $scope.setSingleAllele();
-          $scope.setMultiAllele();
+          $scope.setSingleAlleleGenotypes();
+          $scope.setMultiAlleleGenotypes();
           $scope.setDefaultGenotype();
         };
 

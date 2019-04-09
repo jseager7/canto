@@ -7276,7 +7276,7 @@ var metagenotypeManage = function (CantoGlobals, Curs, CursGenotypeList, Metagen
   };
 };
 
-canto.directive('metagenotypeManage', ['CantoGlobals', 'CursGenotypeList', 'Metagenotype', 'StrainsService', metagenotypeManage]);
+canto.directive('metagenotypeManage', ['CantoGlobals', 'Curs', 'CursGenotypeList', 'Metagenotype', 'StrainsService', metagenotypeManage]);
 
 
 canto.service('StrainsService', function (CantoService, Curs, $q, toaster) {

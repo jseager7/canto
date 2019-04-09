@@ -6986,7 +6986,6 @@ var metagenotypeGenotypePicker =
       controller: function ($scope) {
 
         $scope.data = {
-          genotypes: null,
           singleAlleleGenotypes: [],
           multiAlleleGenotypes: [],
           wildType: [],

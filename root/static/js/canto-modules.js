@@ -7243,7 +7243,13 @@ var metagenotypeManage = function (CantoGlobals, Curs, CursGenotypeList, Metagen
         }
       };
 
-      StrainsService.getAllSessionStrains();
+      onInit();
+
+      function onInit() {
+        loadOrganisms();
+        loadGenotypes();
+        StrainsService.getAllSessionStrains();
+      }
 
       function loadOrganisms() {
         Curs.list('organism').then(function (response) {

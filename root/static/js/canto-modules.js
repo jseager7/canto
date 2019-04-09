@@ -6964,8 +6964,8 @@ var metagenotypeGenotypePicker =
   function (CantoGlobals, CursGenotypeList, toaster, Metagenotype, StrainsService) {
     return {
       scope: {
-        isPathogen: '=',
-        genotypeModel: '=',
+        isPathogen: '<',
+        genotypes: '<'
       },
       restrict: 'E',
       replace: true,
@@ -7179,9 +7179,7 @@ var metagenotypeManage = function (CantoGlobals, CursGenotypeList, Metagenotype,
     replace: true,
     templateUrl: app_static_path + 'ng_templates/metagenotype_manage.html',
     controller: function ($scope) {
-      $scope.pathogenModel = null;
       $scope.selectedPathogen = null;
-      $scope.hostModel = null;
       $scope.selectedHost = null;
       $scope.genotypeUrl = CantoGlobals.curs_root_uri;
       $scope.makeInvalid = true;

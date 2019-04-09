@@ -7,8 +7,7 @@
             </organism-selector-new>
             <metagenotype-genotype-picker
                 is-pathogen="true"
-                genotype-model="pathogenModel"
-                selected-organism="pathogenSelectedOrganism">
+                genotypes="data.selectedPathogenGenotypes"
             </metagenotype-genotype-picker>
         </div>
         <div class="col-md-6">
@@ -18,8 +17,7 @@
             </organism-selector-new>
             <metagenotype-genotype-picker
                 is-pathogen="false"
-                genotype-model="hostModel"
-                selected-organism="hostSelectedOrganism">
+                genotypes="data.selectedHostGenotypes"
             </metagenotype-genotype-picker>
         </div>
     </div>

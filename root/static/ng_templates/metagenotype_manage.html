@@ -2,7 +2,7 @@
     <div class="row" ng-if="display">
         <div class="col-md-6">
             <organism-selector-new
-                organisms="data.pathogenOrganisms"
+                organisms="pathogenOrganisms"
                 organism-selected="onPathogenSelected(organism)">
             </organism-selector-new>
             <metagenotype-genotype-picker
@@ -12,7 +12,7 @@
         </div>
         <div class="col-md-6">
             <organism-selector-new
-                organisms="data.hostOrganisms"
+                organisms="hostOrganisms"
                 organism-selected="onHostSelected(organism)">
             </organism-selector-new>
             <metagenotype-genotype-picker

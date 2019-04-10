@@ -6977,7 +6977,7 @@ var metagenotypeGenotypePicker =
   function (CantoGlobals, CursGenotypeList, toaster, Metagenotype, StrainsService) {
     return {
       scope: {
-        isPathogen: '<',
+        isHost: '<',
         genotypes: '<'
       },
       restrict: 'E',
@@ -6985,12 +6985,12 @@ var metagenotypeGenotypePicker =
       templateUrl: app_static_path + 'ng_templates/metagenotype_genotype_picker.html',
       controller: function ($scope) {
 
+        $scope.organismType = $scope.isHost ? 'host' : 'pathogen';
+        $scope.organismLabel = capitalizeFirstLetter($scope.organismType);
+        $scope.genotypeShortcutUrl = setGenotypeShortcut($scope.organismType);
+
         $scope.data = {
           wildType: [],
-          typeLabel: 'Host',
-          genotypeType: 'host',
-          isHost: false,
-          genotypeShortcutUrl: null
         };
 
         function setGenotypeShortcut(organismType) {
@@ -7025,15 +7025,6 @@ var metagenotypeGenotypePicker =
         $scope.setFilters = function () {
           $scope.setDefaultGenotype();
         };
-
-        if ($scope.isPathogen) {
-          $scope.data.typeLabel = 'Pathogen';
-          $scope.data.genotypeType = 'pathogen';
-        }
-
-        $scope.data.isHost = !$scope.isPathogen;
-
-        $scope.data.genotypeShortcutUrl = setGenotypeShortcut($scope.data.genotypeType);
 
         StrainsService.getAllSessionStrains();
       },

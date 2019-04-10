@@ -6978,6 +6978,7 @@ var metagenotypeGenotypePicker =
     return {
       scope: {
         isHost: '<',
+        selectedOrganism: '<',
         genotypes: '<'
       },
       restrict: 'E',
@@ -6993,6 +6994,14 @@ var metagenotypeGenotypePicker =
           wildType: [],
         };
 
+        if ($scope.isHost) {
+          $scope.$watch('selectedOrganism', function (newVal, oldVal) {
+            if (newVal !== oldVal) {
+              $scope.setWildtypeOrganism();
+            }
+          });
+        }
+
         function setGenotypeShortcut(organismType) {
           return CantoGlobals.curs_root_uri + '/' +
             organismType.toLowerCase() +
@@ -7000,7 +7009,7 @@ var metagenotypeGenotypePicker =
         }
 
         $scope.setWildtypeOrganism = function () {
-          StrainsService.getSessionStrains($scope.data.selectedOrganism.taxonid)
+          StrainsService.getSessionStrains($scope.selectedOrganism.taxonid)
             .then(function (strains) {
               $scope.data.wildType = [];
 
@@ -7026,7 +7035,9 @@ var metagenotypeGenotypePicker =
           $scope.setDefaultGenotype();
         };
 
-        StrainsService.getAllSessionStrains();
+        if ($scope.isHost) {
+          StrainsService.getAllSessionStrains();
+        }
       },
     };
   };
@@ -7155,7 +7166,9 @@ var metagenotypeManage = function (CantoGlobals, Curs, CursGenotypeList, Metagen
       $scope.onHostSelected = function (organism) {
         var taxonId = organism.taxonid;
         $scope.selectedHost = organism;
-        $scope.selectedHostGenotypes = $scope.taxonGenotypeMap[taxonId];
+        $scope.selectedHostGenotypes = taxonId in $scope.taxonGenotypeMap
+          ? $scope.taxonGenotypeMap[taxonId]
+          : {'single': [], 'multi': []}
       };
 
       $scope.toGenotype = function () {

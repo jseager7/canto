@@ -6977,7 +6977,7 @@ var metagenotypeGenotypePicker =
   function (CantoGlobals, CursGenotypeList, toaster, Metagenotype, StrainsService) {
     return {
       scope: {
-        isPathogen: '@',
+        isPathogen: '<',
         genotypes: '<'
       },
       restrict: 'E',

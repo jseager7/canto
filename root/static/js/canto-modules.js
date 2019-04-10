@@ -7237,7 +7237,9 @@ var metagenotypeManage = function (CantoGlobals, Curs, CursGenotypeList, Metagen
       }
 
       function loadGenotypes() {
-        CursGenotypeList.cursGenotypeList().then(function (genotypes) {
+        CursGenotypeList.cursGenotypeList({
+          include_allele: 1
+        }).then(function (genotypes) {
           $scope.taxonGenotypeMap = makeTaxonGenotypeMap(genotypes);
         });
       }

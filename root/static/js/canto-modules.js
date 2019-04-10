@@ -7186,15 +7186,15 @@ var metagenotypeManage = function (CantoGlobals, Curs, CursGenotypeList, Metagen
       $scope.isPickerSet = ($scope.selectedPathogen && $scope.selectedHost);
 
       $scope.onPathogenSelected = function (organism) {
-        var taxonId = organism.taxon_id;
+        var taxonId = organism.taxonid;
         $scope.selectedPathogen = organism;
-        $scope.selectedPathogenGenotypes = $scope.data.taxonGenotypeMap[taxonId];
+        $scope.selectedPathogenGenotypes = $scope.taxonGenotypeMap[taxonId];
       };
 
       $scope.onHostSelected = function (organism) {
-        var taxonId = organism.taxon_id;
+        var taxonId = organism.taxonid;
         $scope.selectedHost = organism;
-        $scope.selectedHostGenotypes = $scope.data.taxonGenotypeMap[taxonId];
+        $scope.selectedHostGenotypes = $scope.taxonGenotypeMap[taxonId];
       };
 
       $scope.toGenotype = function () {

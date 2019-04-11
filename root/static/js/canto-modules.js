@@ -6953,17 +6953,24 @@ var wildGenotypeRow =
     return {
       restrict: 'A',
       scope: {
-        strain: '=',
-        showCheckBoxActions: '=',
-        genotypeModel: '=',
+        strain: '<',
+        showCheckBoxActions: '<',
+        onStrainSelect: '&'
       },
       replace: true,
       templateUrl: CantoGlobals.app_static_path + 'ng_templates/wild_genotype_row.html',
       controller: function ($scope) {
-        $scope.isSelected = function () {
-          $scope.$emit('host selected', $scope.strain);
+
+        $scope.data = {
+          selectedStrain: null
         };
-      },
+
+        $scope.strainSelected = function(strain) {
+          $scope.onStrainSelect({
+            strain: strain
+          });
+        };
+      }
     };
   };
 
@@ -6974,14 +6981,20 @@ var wildGenotypeView =
   function () {
     return {
       scope: {
-        wildType: '=',
-        genotypeModel: '=',
-        organism: '=',
-        showCheckBoxActions: '=',
+        strains: '<',
+        showCheckBoxActions: '<',
+        onStrainSelect: '&'
       },
       restrict: 'E',
       replace: true,
       templateUrl: app_static_path + 'ng_templates/wild_genotype_view.html',
+      controller: function ($scope) {
+        $scope.onStrainChange = function (strain) {
+          $scope.onStrainSelect({
+            strain: strain
+          });
+        };
+      }
     };
   };
 
@@ -6995,7 +7008,8 @@ var metagenotypeGenotypePicker =
         isHost: '<',
         selectedOrganism: '<',
         genotypes: '<',
-        onGenotypeSelect: '&'
+        onGenotypeSelect: '&',
+        onStrainSelect: '&'
       },
       restrict: 'E',
       replace: true,
@@ -7007,13 +7021,13 @@ var metagenotypeGenotypePicker =
         $scope.genotypeShortcutUrl = setGenotypeShortcut($scope.organismType);
 
         $scope.data = {
-          wildType: [],
+          wildTypeStrains: [],
         };
 
         if ($scope.isHost) {
           $scope.$watch('selectedOrganism', function (newVal, oldVal) {
             if (newVal !== oldVal) {
-              $scope.setWildtypeOrganism();
+              $scope.loadWildTypeStrains();
             }
           });
         }
@@ -7024,15 +7038,10 @@ var metagenotypeGenotypePicker =
             '_genotype_manage';
         }
 
-        $scope.setWildtypeOrganism = function () {
+        $scope.loadWildTypeStrains = function () {
           StrainsService.getSessionStrains($scope.selectedOrganism.taxonid)
             .then(function (strains) {
-              $scope.data.wildType = [];
-
-              strains.map(function (strain) {
-                strain.genotype_id = (0 - strain.strain_id);
-                $scope.data.wildType.push(strain);
-              });
+              $scope.data.wildTypeStrains = strains;
             });
         };
 
@@ -7062,6 +7071,12 @@ var metagenotypeGenotypePicker =
             genotype: genotype
           });
         }
+
+        $scope.onStrainChange = function (strain) {
+          $scope.onStrainSelect({
+            strain: strain
+          });
+        };
 
         if ($scope.isHost) {
           StrainsService.getAllSessionStrains();
@@ -7179,6 +7194,7 @@ var metagenotypeManage = function (CantoGlobals, Curs, CursGenotypeList, Metagen
       $scope.selectedHost = null;
       $scope.selectedHostGenotypes = null;
       $scope.selectedGenotypeHost = null;
+      $scope.selectedHostStrain = null;
 
       $scope.taxonGenotypeMap = null;
 
@@ -7207,6 +7223,10 @@ var metagenotypeManage = function (CantoGlobals, Curs, CursGenotypeList, Metagen
 
       $scope.onHostGenotypeSelect = function (genotype) {
         $scope.selectedGenotypeHost = genotype;
+      };
+
+      $scope.onHostStrainSelect = function (strain) {
+        $scope.selectedHostStrain = strain;
       };
 
       $scope.toGenotype = function () {

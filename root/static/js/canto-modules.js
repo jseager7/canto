@@ -6891,9 +6891,9 @@ var genotypeSimpleListRowCtrl =
     return {
       restrict: 'A',
       scope: {
-        genotype: '=',
-        showCheckBoxActions: '=',
-        genotypeModel: '=',
+        genotype: '<',
+        showCheckBoxActions: '<',
+        onGenotypeSelect: '&'
       },
       replace: true,
       templateUrl: CantoGlobals.app_static_path + 'ng_templates/genotype_simple_list_row.html',
@@ -6905,11 +6905,16 @@ var genotypeSimpleListRowCtrl =
         $scope.firstAllele = $scope.genotype.alleles[0];
         $scope.otherAlleles = $scope.genotype.alleles.slice(1);
 
-        $scope.isSelected = function () {
-          var pathogen_or_host = $scope.genotype.organism.pathogen_or_host;
-          $scope.$emit(pathogen_or_host + ' selected', $scope.genotype);
+        $scope.data = {
+          selectedGenotype: null
         };
-      },
+
+        $scope.genotypeSelected = function (genotype) {
+          $scope.onGenotypeSelect({
+            genotype: genotype
+          });
+        };
+      }
     };
   };
 
@@ -6923,10 +6928,20 @@ var genotypeSimpleListViewCtrl =
         genotypeList: '=',
         showCheckBoxActions: '=',
         genotypeModel: '=',
+        onGenotypeSelect: '&'
       },
       restrict: 'E',
       replace: true,
       templateUrl: app_static_path + 'ng_templates/genotype_simple_list_view.html',
+      controller: function ($scope) {
+
+        $scope.onGenotypeChange = function (genotype) {
+          $scope.onGenotypeSelect({
+            genotype: genotype
+          });
+        }
+
+      }
     };
   };
 
@@ -6979,7 +6994,8 @@ var metagenotypeGenotypePicker =
       scope: {
         isHost: '<',
         selectedOrganism: '<',
-        genotypes: '<'
+        genotypes: '<',
+        onGenotypeSelect: '&'
       },
       restrict: 'E',
       replace: true,
@@ -7034,6 +7050,18 @@ var metagenotypeGenotypePicker =
         $scope.setFilters = function () {
           $scope.setDefaultGenotype();
         };
+
+        $scope.onGenotypeChangeSingle = function (genotype) {
+          $scope.onGenotypeSelect({
+            genotype: genotype
+          });
+        }
+
+        $scope.onGenotypeChangeMulti = function (genotype) {
+          $scope.onGenotypeSelect({
+            genotype: genotype
+          });
+        }
 
         if ($scope.isHost) {
           StrainsService.getAllSessionStrains();
@@ -7145,10 +7173,12 @@ var metagenotypeManage = function (CantoGlobals, Curs, CursGenotypeList, Metagen
       $scope.pathogenOrganisms = null;
       $scope.selectedPathogen = null;
       $scope.selectedPathogenGenotypes = null;
+      $scope.selectedGenotypePathogen = null;
 
       $scope.hostOrganisms = null;
       $scope.selectedHost = null;
       $scope.selectedHostGenotypes = null;
+      $scope.selectedGenotypeHost = null;
 
       $scope.taxonGenotypeMap = null;
 
@@ -7163,12 +7193,20 @@ var metagenotypeManage = function (CantoGlobals, Curs, CursGenotypeList, Metagen
         $scope.selectedPathogenGenotypes = $scope.taxonGenotypeMap[taxonId];
       };
 
+      $scope.onPathogenGenotypeSelect = function (genotype) {
+        $scope.selectedGenotypePathogen = genotype;
+      };
+
       $scope.onHostSelected = function (organism) {
         var taxonId = organism.taxonid;
         $scope.selectedHost = organism;
         $scope.selectedHostGenotypes = taxonId in $scope.taxonGenotypeMap
           ? $scope.taxonGenotypeMap[taxonId]
           : {'single': [], 'multi': []}
+      };
+
+      $scope.onHostGenotypeSelect = function (genotype) {
+        $scope.selectedGenotypeHost = genotype;
       };
 
       $scope.toGenotype = function () {

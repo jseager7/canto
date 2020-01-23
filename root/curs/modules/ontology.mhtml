@@ -6,9 +6,15 @@ $feature
 $pub
 </%args>
 
-<div class="curs-annotate-feature-title">
-    Annotating <% $feature_type %> &ndash; <% $feature_display_name %>
-</div>
+% if (!$annotation_type_name == "pathogen_host_interaction_phenotype") {
+  <metagenotype-display-name
+    feature_id="<% $feature->feature_id %>"
+  ></metagenotype-display-name>
+% } else {
+  <div class="curs-annotate-feature-title">
+      Annotating <% $feature_type %> &ndash; <% $feature_display_name %>
+  </div>
+% }
 
 <div ng-controller="OntologyWorkflowCtrl"
      annotation-type-name="<% $annotation_type_name %>"

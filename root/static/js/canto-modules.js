@@ -9456,3 +9456,50 @@ var finishedPublicationPageCtrl =
 
 canto.controller('FinishedPublicationPageCtrl',
                  ['$scope', '$uibModal', 'CursSettings', finishedPublicationPageCtrl]);
+
+canto.component('metagenotypeDisplayName', {
+  bindings: {
+    featureId: '@'
+  },
+  template: '<div class="curs-annotate-feature-title">Annotating metagenotype &ndash; <span ng-bind-html="$ctrl.displayName | encodeAlleleSymbols | toTrusted"></span></div>',
+  controller: 'metagenotypeDisplayNameCtrl'
+});
+
+var metagenotypeDisplayNameCtrl = function (Curs, abbreviateGenusFilter) {
+  var ctrl = this;
+
+  ctrl.$onInit = function () {
+    var mg = null;
+    Curs.list('metagenotype').then(function (metagenotypes) {
+      mg = metagenotypes.find(getMetagenotypeById(ctrl.featureId));
+      ctrl.displayName = buildDisplayName(mg);
+    });
+  };
+
+  function buildDisplayName(metagenotype) {
+    var host = abbreviateGenusFilter(
+      metagenotype.host_genotype.organism.scientific_name
+    );
+    var hostStrain = '(' + metagenotype.host_genotype.strain_name + ')';
+    var hostGenotype = metagenotype.host_genotype.display_name;
+    var hostDisplay = [hostGenotype, host, hostStrain].join(' ');
+    var pathogen = abbreviateGenusFilter(
+      metagenotype.pathogen_genotype.organism.scientific_name
+    );
+    var pathogenStrain = '(' + metagenotype.pathogen_genotype.strain_name + ')';
+    var pathogenGenotype = metagenotype.pathogen_genotype.display_name;
+    var pathogenDisplay = [pathogenGenotype, pathogen, pathogenStrain].join(' ');
+    return [pathogenDisplay, hostDisplay].join(' / ');
+  }
+
+  function getMetagenotypeById(id) {
+    return function (mg) {
+      return mg.feature_id == id;
+    };
+  }
+};
+
+canto.controller(
+  'metagenotypeDisplayNameCtrl',
+  ['Curs', 'abbreviateGenusFilter', metagenotypeDisplayNameCtrl]
+);

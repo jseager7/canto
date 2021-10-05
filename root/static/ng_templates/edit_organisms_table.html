@@ -8,13 +8,14 @@
       <thead>
         <tr>
           <th rowspan="2">Organism</th>
-          <th class="curs-genes-and-orgs-edit-gene" colspan="3">Gene</th>
+          <th class="curs-genes-and-orgs-edit-gene" colspan="4">Gene</th>
           <th ng-if="!readOnly" rowspan="2"></th>
         </tr>
         <tr>
             <th>ID</th>
             <th>Name</th>
             <th>Product</th>
+            <th>Sequence</th>
         </tr>
       </thead>
       <tbody ng-repeat="organism in organisms() track by organism.taxonid">
@@ -25,6 +26,11 @@
           <td>{{ gene.systematic_identifier }}</td>
           <td>{{ gene.name }}</td>
           <td>{{ gene.product }}</td>
+          <td>
+            <button type="button" class="btn btn-primary btn-xs">
+              Add sequence&hellip;
+            </button>
+          </td>
           <td ng-if="!readOnly" style="vertical-align: top;">
             <button
                 ng-disabled="gene.disabled"
@@ -39,7 +45,7 @@
           <td>
             <i>{{ organism.scientific_name }}</i>
           </td>
-          <td class="organism-table__no-gene-notice" colspan="3">
+          <td class="organism-table__no-gene-notice" colspan="4">
             (No genes for this organism)
           </td>
           <td ng-if="!readOnly">
@@ -57,7 +63,7 @@
           </td>
         </tr>
         <tr ng-if="strainsMode">
-          <td colspan="{{ readOnly ? 4 : 5 }}">
+          <td colspan="{{ readOnly ? 5 : 6 }}">
             <strain-picker taxon-id="{{ organism.taxonid }}"></strain-picker>
           </td>
         </tr>

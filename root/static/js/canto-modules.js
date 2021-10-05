@@ -10732,57 +10732,19 @@ var editOrganismsTable = function (EditOrganismsSvc, CantoGlobals) {
     replace: true,
     templateUrl: app_static_path + 'ng_templates/edit_organisms_table.html',
     controller: function ($scope, EditOrganismsSvc) {
-      $scope.data = {
-        strainsMode: CantoGlobals.strains_mode,
-      };
-      $scope.readOnlyMode = CantoGlobals.read_only_curs;
+      $scope.strainsMode = CantoGlobals.strains_mode;
+      $scope.readOnly = CantoGlobals.read_only_curs;
 
-      $scope.firstGene = function (genes) {
-        if (genes.length > 0) {
-          return $scope.geneAttributes(genes[0]);
-        }
-
-        return {
-          taxonid: "",
-          name: "",
-          synonyms: "",
-          product: "",
-        };
+      $scope.removeGene = function (geneId) {
+        EditOrganismsSvc.removeGene(geneId);
       };
 
-      $scope.otherGenes = function (genes) {
-        return genes.filter(function (_, index) {
-          return index > 0;
-        }).map(function (gene) {
-          return $scope.geneAttributes(gene);
-        });
+      $scope.canRemoveHost = function(host) {
+        return host.genes.length === 0 && host.genotype_count === 0;
       };
 
-      $scope.removeGene = function (gene_id) {
-        EditOrganismsSvc.removeGene(gene_id);
-      };
-
-      $scope.canRemoveHost = function(org) {
-        return org.genes.length == 0 && org.genotype_count == 0;
-      };
-
-      $scope.removeHost = function (taxon_id) {
-        EditOrganismsSvc.removeHost(taxon_id);
-      };
-
-      $scope.geneAttributes = function (gene) {
-        gene.disabled = false;
-        gene.title = "Delete this gene";
-
-        if (gene.annotation_count > 0) {
-          gene.disabled = true;
-          gene.title = "This gene can't be deleted because it has annotations";
-        } else if (gene.genotype_count > 0) {
-          gene.disabled = true;
-          gene.title = "This gene can't be deleted because there are genotypes involving this gene";
-        }
-
-        return gene;
+      $scope.removeHost = function (taxonId) {
+        EditOrganismsSvc.removeHost(taxonId);
       };
     }
   };

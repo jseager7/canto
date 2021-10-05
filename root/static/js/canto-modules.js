@@ -10722,7 +10722,7 @@ var editOrganismsGenesTable = function () {
 canto.directive('editOrganismsGenesTable', [editOrganismsGenesTable]);
 
 
-var editOrganismsTable = function (EditOrganismsSvc, CantoGlobals) {
+var editOrganismsTable = function () {
   return {
     scope: {
       tableTitle: '@',
@@ -10731,27 +10731,33 @@ var editOrganismsTable = function (EditOrganismsSvc, CantoGlobals) {
     restrict: 'E',
     replace: true,
     templateUrl: app_static_path + 'ng_templates/edit_organisms_table.html',
-    controller: function ($scope, EditOrganismsSvc) {
-      $scope.strainsMode = CantoGlobals.strains_mode;
-      $scope.readOnly = CantoGlobals.read_only_curs;
-
-      $scope.removeGene = function (geneId) {
-        EditOrganismsSvc.removeGene(geneId);
-      };
-
-      $scope.canRemoveHost = function(host) {
-        return host.genes.length === 0 && host.genotype_count === 0;
-      };
-
-      $scope.removeHost = function (taxonId) {
-        EditOrganismsSvc.removeHost(taxonId);
-      };
-    }
+    controller: 'editOrganismsTableCtrl',
   };
 };
 
-canto.directive('editOrganismsTable',
-                ['EditOrganismsSvc', 'CantoGlobals', editOrganismsTable]);
+function editOrganismsTableCtrl($scope, EditOrganismsSvc, CantoGlobals) {
+  $scope.strainsMode = CantoGlobals.strains_mode;
+  $scope.readOnly = CantoGlobals.read_only_curs;
+
+  $scope.removeGene = function (geneId) {
+    EditOrganismsSvc.removeGene(geneId);
+  };
+
+  $scope.canRemoveHost = function(host) {
+    return host.genes.length === 0 && host.genotype_count === 0;
+  };
+
+  $scope.removeHost = function (taxonId) {
+    EditOrganismsSvc.removeHost(taxonId);
+  };
+}
+
+canto.controller(
+  'editOrganismsTableCtrl',
+  ['$scope', 'EditOrganismsSvc', 'CantoGlobals', editOrganismsTableCtrl]
+)
+
+canto.directive('editOrganismsTable', [editOrganismsTable]);
 
 
 var editOrganisms = function ($window, EditOrganismsSvc, StrainsService, CantoGlobals) {

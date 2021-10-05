@@ -50,14 +50,14 @@
           </td>
           <td ng-if="!readOnly">
             <button 
-              ng-if="canRemoveHost(organism)"
-              title="Remove host"
-              class="btn-danger"
-              ng-click="removeHost(organism.taxonid)">X</button>
+                ng-if="canRemoveHost(organism)"
+                title="Remove host"
+                class="btn-danger"
+                ng-click="removeHost(organism.taxonid)">X</button>
             <button
-              ng-if="!canRemoveHost(organism)"
-              disabled="disabled"
-              title="Host can't be removed because it is used in a metagenotype">
+                ng-if="!canRemoveHost(organism)"
+                disabled="disabled"
+                title="Host can't be removed because it is used in a metagenotype">
               <span class="gene-button-delete-text-disabled">X</span>
             </button>
           </td>

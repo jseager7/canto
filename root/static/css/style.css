@@ -1951,3 +1951,14 @@ a:not([href]) {
   margin-top: 2em;
   font-size: 110%;
 }
+
+.curs-sequence-entry-label {
+  display: block;
+}
+
+.curs-sequence-entry-field {
+  font-family: monospace;
+  margin-bottom: 10px;
+  resize: vertical;
+  width: 100%;
+}

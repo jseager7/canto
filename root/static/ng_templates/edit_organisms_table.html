@@ -27,7 +27,10 @@
           <td>{{ gene.name }}</td>
           <td>{{ gene.product }}</td>
           <td>
-            <button type="button" class="btn btn-primary btn-xs">
+            <button
+                type="button"
+                class="btn btn-primary btn-xs"
+                ng-click="openSequenceDialog(gene)">
               Add sequence&hellip;
             </button>
           </td>

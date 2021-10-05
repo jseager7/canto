@@ -1746,6 +1746,61 @@ function openSingleGeneAddDialog($uibModal) {
   });
 }
 
+function openSequenceDialog($uibModal, gene) {
+  return $uibModal.open({
+    templateUrl: app_static_path + 'ng_templates/sequence_dialog.html',
+    controller: 'sequenceDialogCtrl',
+    resolve: {
+      args: function () {
+        return {
+          gene: gene,
+        };
+      },
+    },
+    animate: false,
+    windowClass: 'modal',
+    backdrop: 'static',
+  });
+}
+
+function sequenceDialogCtrl($scope, $q, $uibModalInstance, toaster, args) {
+  $scope.gene = args.gene;
+
+  $scope.ok = function () {
+    loadingStart();
+    var storedToaster = toaster.pop({
+      type: 'info',
+      title: 'Storing annotation...',
+      timeout: 0, // last until the finally()
+      showCloseButton: false
+    });
+    $q.resolve().then(function () {
+        $uibModalInstance.close(true);
+        toaster.pop({
+          type: 'success',
+          title: 'Sequence stored successfully.',
+          timeout: 5000,
+          showCloseButton: true
+        });
+      })
+      .catch(function () {
+        toaster.pop('error', 'Failed to store sequence!');
+      })
+      .finally(function () {
+        loadingEnd();
+        toaster.clear(storedToaster);
+      });
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('close');
+  };
+}
+
+canto.controller(
+  'sequenceDialogCtrl',
+  ['$scope', '$q', '$uibModalInstance', 'toaster', 'args', sequenceDialogCtrl]
+);
 
 function featureChooserControlHelper($scope, $uibModal, CursGeneList,
                                      CursGenotypeList, Curs, toaster) {
@@ -10735,7 +10790,7 @@ var editOrganismsTable = function () {
   };
 };
 
-function editOrganismsTableCtrl($scope, EditOrganismsSvc, CantoGlobals) {
+function editOrganismsTableCtrl($scope, $uibModal, EditOrganismsSvc, CantoGlobals) {
   $scope.strainsMode = CantoGlobals.strains_mode;
   $scope.readOnly = CantoGlobals.read_only_curs;
 
@@ -10750,11 +10805,18 @@ function editOrganismsTableCtrl($scope, EditOrganismsSvc, CantoGlobals) {
   $scope.removeHost = function (taxonId) {
     EditOrganismsSvc.removeHost(taxonId);
   };
+
+  $scope.openSequenceDialog = function (geneId) {
+    var modal = openSequenceDialog($uibModal, geneId);
+    modal.result.then(function (result) {
+      console.log(result);
+    }).catch(angular.noop) // don't care
+  }
 }
 
 canto.controller(
   'editOrganismsTableCtrl',
-  ['$scope', 'EditOrganismsSvc', 'CantoGlobals', editOrganismsTableCtrl]
+  ['$scope', '$uibModal', 'EditOrganismsSvc', 'CantoGlobals', editOrganismsTableCtrl]
 )
 
 canto.directive('editOrganismsTable', [editOrganismsTable]);

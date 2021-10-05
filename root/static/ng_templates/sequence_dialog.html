@@ -1,0 +1,44 @@
+<div class="curs-sequence-dialog modal-content">
+  
+  <div class="modal-header">
+    <h4 class="modal-title">
+      Add sequence for {{gene.name}} ({{gene.systematic_identifier}})
+    </h4>
+  </div>
+  
+  <div class="modal-body">
+    <div class="curs-dialog-body-contents">
+      <label class="curs-sequence-entry-label">Gene sequence</label>
+      <textarea
+          class="form-control curs-sequence-entry-field"
+          spellcheck="false"
+          rows="10"></textarea>
+      <label class="curs-sequence-entry-label">Protein sequence</label>
+      <textarea
+          class="form-control curs-sequence-entry-field"
+          spellcheck="false"
+          rows="10"></textarea>
+    </div>
+  </div>
+  
+  <div class="modal-footer">
+    
+    <button
+        type="button"
+        class="btn btn-warning"
+        ng-click="cancel()"
+        ng-alt-enter="cancel()">
+      Cancel
+    </button>
+
+    <button
+        type="button"
+        class="btn btn-primary"
+        ng-click="ok()"
+        ng-alt-enter="ok()">
+      OK
+    </button>
+
+  </div>
+
+</div>
